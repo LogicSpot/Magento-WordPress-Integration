@@ -47,37 +47,12 @@ class jck_mwi {
 	public function initiate_hook()
 	{
 
-	    $active_addons = $this->active_addons();
-
 	    // Run on admin
         if(is_admin())
         {
-
             add_action( 'admin_menu',           array(&$this, 'add_settings_page') );
-
-            if(is_admin() && $this->check_functions_file())
-            {
-                add_action( 'admin_head',               array(&$this, 'active_plugins_js') );
-
-                // if shortcodes or cat listing addons are active, add mce button
-
-                if( $active_addons && ( in_array( 'mwi-shortcodes', $active_addons ) || in_array( 'mwi-category-listing', $active_addons ) ) ) {
-
-                    add_action( 'admin_head',               array(&$this, 'add_mce_button') );
-                    add_action( 'admin_enqueue_scripts',    array(&$this, 'add_mce_button_css') );
-
-                }
-            }
-
-        }
-
-        // Run on frontend
-        else
-        {
-
+        } else {
             add_action( 'template_redirect',    array(&$this, 'mage') );
-    		add_action( 'wp_enqueue_scripts',   array(&$this, 'frontend_styles_scripts') );
-
         }
 
 	}
@@ -247,7 +222,6 @@ class jck_mwi {
 	public function render_settings_page() {
 
     	$checkMage = $this->check_mage(true);
-    	$magepath = $this->get_mage_path();
 
     	if($checkMage['result'] == false || ($this->check_functions_file() && $checkMage['result'] == true)):
     	    require_once("inc/admin.php");
@@ -393,132 +367,6 @@ class jck_mwi {
 		wp_enqueue_style( 'mwi-admin-css' );
 
 	}
-
-/**	=============================
-    *
-    * Admin Head Active Plugins JS
-    *
-    ============================= */
-
-	public function active_plugins_js() {
-
-    	$active_addons = $this->active_addons();
-
-    	if($active_addons) {
-
-        	?>
-            <script type="text/javascript">
-            var mwi_active_addons = <?php echo json_encode($active_addons); ?>;
-            </script>
-            <?php
-
-        }
-
-	}
-
-/**	=============================
-    *
-    * MCE - add button
-    *
-    ============================= */
-
-    function add_mce_button() {
-
-        // check user permissions
-        if ( !current_user_can('edit_posts') && !current_user_can('edit_pages') ) {
-            return;
-        }
-
-    	// check if WYSIWYG is enabled
-    	if ( get_user_option('rich_editing') == 'true') {
-    		add_filter( "mce_external_plugins",     array(&$this, "add_mce_button_script") );
-    		add_filter( 'mce_buttons',              array(&$this, 'register_mce_button') );
-    	}
-
-    }
-
-/**	=============================
-    *
-    * MCE - add button scripts
-    *
-    ============================= */
-
-    function add_mce_button_script($plugin_array) {
-
-       	$plugin_array['mwi_sc_button'] = $this->plugin_url . 'assets/admin/js/shortcode-button.js';
-       	return $plugin_array;
-
-    }
-
-/**	=============================
-    *
-    * MCE - register button
-    *
-    ============================= */
-
-    function register_mce_button($buttons) {
-
-       array_push($buttons, "mwi_sc_button");
-       return $buttons;
-
-    }
-
-/**	=============================
-    *
-    * MCE - add button styles
-    *
-    ============================= */
-
-    function add_mce_button_css() {
-
-    	wp_enqueue_style( 'mwi_sc_button', $this->plugin_url . 'assets/admin/css/shortcode-button.css' );
-
-    }
-
-/**	=============================
-    *
-    * Frontend Scripts
-    *
-    ============================= */
-
-	public function frontend_styles_scripts() {
-
-    	// styles
-    	if( $this->active_addons() &&  $this->getValue('styles') ) {
-            wp_register_style( 'mwi-addon-styles', plugins_url('assets/frontend/css/addon-styles.css', __FILE__) );
-		    wp_enqueue_style( 'mwi-addon-styles' );
-		}
-
-    	// scripts
-		wp_register_script( 'mwi-js', plugins_url('/assets/frontend/js/scripts.min.js', __FILE__), array(), false, true);
-		wp_enqueue_script( 'mwi-js' );
-
-	}
-
-/**	=============================
-    *
-    * Check for Active Addons
-    *
-    * return array|bool Returns array of active addons, if found, or false if not
-    *
-    ============================= */
-
-    public function active_addons() {
-
-        $active_addons = array();
-        $active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
-
-        if ( in_array( 'mwi-shortcodes/mwi-shortcodes.php', $active_plugins ) )
-            $active_addons[] = 'mwi-shortcodes';
-
-        if ( in_array( 'mwi-category-listing/mwi-category-listing.php', $active_plugins ) )
-            $active_addons[] = 'mwi-category-listing';
-
-        if( empty($active_addons) )
-            return false;
-
-        return $active_addons;
-    }
 
 }
 
