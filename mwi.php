@@ -70,7 +70,7 @@ class jck_mwi {
 
     public function layout() {
 
-        if($GLOBALS['layout']) {
+        if(isset($GLOBALS['layout']) && $GLOBALS['layout']) {
 
             $layout = $GLOBALS['layout'];
 
