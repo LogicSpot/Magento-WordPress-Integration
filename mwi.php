@@ -18,7 +18,6 @@ class jck_mwi {
     public $version = "3.2.5";
     public $plugin_path;
     public $plugin_url;
-    public $helpers;
 
 /**	=============================
     *
@@ -31,10 +30,6 @@ class jck_mwi {
 
         $this->plugin_path = plugin_dir_path( __FILE__ );
         $this->plugin_url = plugin_dir_url( __FILE__ );
-
-        // set up additional classes
-        require_once('class-helpers.php');
-        $this->helpers = new jck_mwi_helpers();
 
         // Hook up to the init action
         add_action( 'init', array( &$this, 'initiate_hook' ) );
