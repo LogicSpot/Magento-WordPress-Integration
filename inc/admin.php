@@ -1,8 +1,6 @@
 <?php global $jck_mwi; ?>
 
 <div class="wrap clearfix">
-
-    <?php require_once('admin-sidebar.php'); ?>
 	
 	<div id="mwi_left">
 		<div id="poststuff" class="fleft">

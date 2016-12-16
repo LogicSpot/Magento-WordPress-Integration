@@ -2,8 +2,6 @@
 
 <div class="wrap clearfix">
 
-	<?php require_once('admin-sidebar.php'); ?>
-	
 	<div id="mwi_left">
 		<div id="poststuff" class="fleft">
 			<h2 class="mwi-title"><?php echo $jck_mwi->name; ?></h1>
