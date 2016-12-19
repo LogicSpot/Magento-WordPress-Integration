@@ -6,7 +6,7 @@
 	
 	<div id="mwi_left">
 		<div id="poststuff" class="fleft">
-			<h2 class="mwi-title"><?php echo $jck_mwi->name; ?></h1>
+			<h2 class="mwi-title"><?php echo $jck_mwi->name; ?></h2>
 			<p><?php _e('The modified functions.php in Magento could not be found. It is very important this is created before MWI will work. Please see the instructions below.', $jck_mwi->slug); ?></p>
 			<h2><?php _e('Installation', $jck_mwi->slug); ?></h2>
 			
