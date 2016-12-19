@@ -332,27 +332,13 @@ class jck_mwi {
 
 /**	=============================
     *
-    * Validate WMI Settings
-    *
-    * @return array
-    *
-    ============================= */
-
-	public function validate_mwi_settings($data) {
-
-		return $data;
-
-	}
-
-/**	=============================
-    *
     * Register MWI Settings
     *
     ============================= */
 
 	public function register_mwi_settings() {
 
-		register_setting( 'mwi-main-settings', 'mwi_options', array(&$this, 'validate_mwi_settings') );
+		register_setting( 'mwi-main-settings', 'mwi_options' );
 
 	}
 
