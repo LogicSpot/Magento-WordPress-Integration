@@ -70,7 +70,7 @@ class jck_mwi {
 
     public function layout() {
 
-        if($GLOBALS['layout']) {
+        if(isset($GLOBALS['layout']) && $GLOBALS['layout']) {
 
             $layout = $GLOBALS['layout'];
 
@@ -181,6 +181,8 @@ class jck_mwi {
 
     			if(class_exists( 'Mage' ) && !is_admin()) {
     				$app = $this->getApp();
+
+                    $app->loadArea('frontend');
 
     				$locale = $app->getLocale()->getLocaleCode();
     				Mage::getSingleton('core/translate')->setLocale($locale)->init('frontend', true);
